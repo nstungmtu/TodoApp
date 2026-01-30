@@ -10,11 +10,3 @@ class User(ModelBase):
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False),
     is_admin: Mapped[int] = mapped_column(Integer, default=0),
     todos: Mapped[list["Todo"]] = relationship("Todo", back_populates="user")
-    # #Automatically hash password when setting it
-    # def set_password(self, raw_password: str):
-    #     import hashlib
-    #     self.password = hashlib.sha256(raw_password.encode("utf-8")).hexdigest()
-    # #Check password
-    # def check_password(self, raw_password: str) -> bool:
-    #     import hashlib
-    #     return self.password == hashlib.sha256(raw_password.encode("utf-8")).hexdigest()

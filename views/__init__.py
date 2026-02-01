@@ -100,3 +100,19 @@ def require_login(request, session):
     
     # Trả về None để cho phép request đi tiếp
     return None
+
+#Định nghĩa menubar chung cho tất cả các trang sử dụng picocss
+def menubar(request):
+    is_admin = request.session.get('is_admin', False)
+    is_logged_in = 'login' in request.session.keys()
+    return FH.Nav(
+        FH.Ul(
+            FH.Li(FH.A("Trang chủ", href="/")),
+            FH.Li(FH.A("Đăng xuất", href="/logout")) if is_logged_in else FH.Li(FH.A("Đăng nhập", href="/login")),
+            #Hiển thị tên người dùng nếu đã đăng nhập
+            FH.Li(f"Xin chào, {request.session.get('name')}") if is_logged_in else None,
+            #Hiển thị link quản trị nếu là admin
+            FH.Li(FH.A("Quản trị", href="/admin")) if is_admin else None,
+        ),
+        cls="menubar"
+    )

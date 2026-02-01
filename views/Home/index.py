@@ -8,9 +8,11 @@
 from fasthtml import common as FH
 from sqlalchemy.orm import Session
 from models import User, Todo
+from views import *
 
-def home_page(user: User):
+def home_page(request, user: User):
     return FH.Div(
+        menubar(request),
         FH.H1(f"Chào mừng trở lại, {user.name}!"),
         FH.H2("Đây là danh sách công việc của bạn:"),
         FH.Ul(*[

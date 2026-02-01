@@ -27,7 +27,7 @@ beforeware = FH.Beforeware(require_login, skip=["/login", "/init_db", "/static/"
 # pico=True: sử dụng Pico.css cho giao diện
 # htmx=True: tích hợp HTMX để tạo các trang web động
 app,rt = FH.fast_app(
-    beforeware=beforeware,
+    before=beforeware,
     static_folder="static",
     pico=True,
     htmx=True,
@@ -66,7 +66,7 @@ def get(request):
                 _ = todotag.tag  # Truy cập thuộc tính tag để load dữ liệu
         db.close()
     
-    return Home.home_page(user)
+    return Home.home_page(request, user)
 
 # Định nghĩa route "/login" cho phương thức GET
 # Trả về giao diện login
@@ -99,6 +99,14 @@ def post(request, login: str, password: str):
         db.close() # Đóng session
     # Chuyển hướng người dùng về trang chủ
     return FH.Redirect("/")
+
+#Đăng xuất
+@rt("/logout")
+def get(request):
+    # Xoá thông tin user khỏi session để đăng xuất
+    request.session.clear()
+    # Chuyển hướng về trang đăng nhập
+    return FH.Redirect("/login")
 
 # Chạy ứng dụng web
 # app="app": tên biến chứa ứng dụng FastHTML
